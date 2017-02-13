@@ -1,0 +1,11 @@
+language: python
+python:
+- '3.6'
+install: pip install hovercraft
+script:
+- hovercraft mesos-health-checks/presentation.rst _output/mesos-health-checks
+after_success:
+- ./deploy.sh
+env:
+  global:
+    secure: pZDo8nrPnFP+F9gC81sff8ZOh1iWuO7gCwQ//0a5L06oGsMT9+mLZn57VOy9qX6TwRqf0JcWs5TIHRy8mJI14P4h48nxrnRSjUQmf1124zhyXN48+pPh04FlIlfbKd+/OuvnRdUOaXVAmShCIWw/zKyAyJZGeJNPC6E+ykMJ5xEU06k3Gmch8BzcV+KYvTLe8tpj9UgGKFJW36dIAicfcJNQUHFIvo6Ape7rZ3F4/fzD/wKONt6+PGVgFBfj6CY8fXbyzWpsGGytord8e3Yh9eBSBkvdkn60n2M5Y3Ld9uoR/X/ZrNYbT6SVjCgrdzN3qQgEvSdy+TKlDCzBDyhCFTDNynLVvo0op0STXDC+pH/Pi6gIvvaidPDtQmR3K8eU4ap3HPjitKEycNP7CH2iPoc0EQTovKC4Y4EAkJoaaz/dliM+6+qsoyzRjYAuDETbEUWvRtrI6U1y5gNxPuEtAm4Qyt1aO6tnlJqX/g334ViQIo9T3bpbdcxFe57nrtNPx+8XLOMTX2Ai+ChOxsR9cOvDAW4q9wrAtAw5nrdJxV5CfpZDb34AM6vq6N5wwDLN9TDWglHkXvD+KigpErKjPEpGfw5bgrrWcrFRsAPWOP7K+RNzwMLJgq2OdM1SL9MIBPDU2wxZfyFdvZGtq/gDfOxJDskTHSDx0wUVcfy+3HQ=

@@ -1,290 +1,215 @@
-:title: Hovercraft! demo
+:title: Health Checks
 :data-transition-duration: 1500
-:css: hovercraft.css
-
-This is a demo for Hovercraft! You can view it as a finished presentation
-at http://regebro.github.com/hovercraft/
-
-
-It's also useful as an example, in which case it's supposed to be read as
-`source code <../_sources/examples/hovercraft.txt>`_.
-
-You can render this presentation to HTML with the command::
-
-    hovercraft hovercraft.rst outdir
-
-And then view the outdir/index.html file to see how it turned out.
-
-If you are seeing this text, and not reading this as source code, you are
-doing it wrong! It's going to be confusing and not very useful.
-
-Use The Source, Luke! But first you probably want to read through the
-official documentation at https://hovercraft.readthedocs.org/
+:css: site.css
 
 ----
 
-The problem:
+Who am I?
 ============
 
-Making presentations is no *fun!*
----------------------------------
+Chris Kolenko | CBA Software Engineer
+-------------------------------------
 
 .. note::
 
-    Welcome to the presenter console!
+    Talk about hobbies, family
 
 ----
 
-GUI tools are inflexible
-========================
+Why am I presenting?
+====================
 
-* It's hard to reorganize or import text
+* Mesos native health checks is new (1.1.0 - 1.2.0)
 
-* Slow and memory hungry
+* Marathon Load Balancer
 
-* You get caught up in design early in the process.
+* Masters couldn't connect to workloads
 
 .. note::
 
-    Here you have a view of the current slide, a preview of the next slide
-    and your notes.
+    Stephan asked if I was willing to give a presentation, since it was a new feature.
+
+    I stubbled across this new feature trying to make Marathon LB work correctly for my App.
+
+    When trying Marathon HTTP it didn't work (because of our network). Which was good because I didn't really know what it was going to do.
 
 ----
 
-Use reStructuredText!
-=====================
+What is a health check?
+=======================
 
-* You can use your favorite text-editor!
-
-* Many tools available: Landslide, S5
-
-* Convenient (and powerful!)
+In very simple terms it's a pass or fail test that runs every now and then to make sure something is passing.
 
 .. note::
 
-    You also have a clock and a timer, so you know how much time you have
-    left.
-
-----
-
-But then there was Prezi
-========================
-
-Sliding from left to right is no longer enough.
-You need to be able to...
-
-.. note::
-
-    If you click on the timer it restarts from zero. This is handy when you
-    are rehearsing the presentation and need to make sure it fits in the time
-    allocated.
-
-----
-
-:data-y: r1000
-
-...pan...
-=========
-
-.. note::
-
-    If you have more notes than fit in the console, you can scroll down, but
-    more handily, you can scroll the text up by pressing space bar.
+    I'll get to the framework limitations soon.
 
 ----
 
 :data-rotate: 90
 
-...rotate...
-============
-
-.. note::
-
-   If there isn't more text to scroll up, space bar will go to the next
-   slide. Therefore you, as a presenter, just press space every time you run
-   out of things to say!
-
-----
-
-:data-x: r0
-:data-y: r500
-:data-scale: 0.1
-
-...and zoom!
-============
-
-.. note::
-
-    Zooming is cool. But one day it will grow old as well. What will we do
-    then to make presentations interesting?
-
-----
-
-:data-x: r-800
-:data-scale: 1
-
-But Prezi is a GUI
-==================
-
-So we are back to square one.
-
-(And it is closed source to boot)
-
-.. note::
-
-    It's probably back to making bad jokes again.
-
-----
-
-What about impress.js?
-======================
-
-It's open source!
-
-Supports pan, tilt and zoom!
-
-
-----
-
-:id: ThreeD
-:data-y: r1200
-:data-rotate-x: 180
-
-In three dimensions!
-====================
-
-*But...*
-
-.. note::
-
-    Wow! 3D! You didn't see that one coming, did you?
-
-----
-
-
-It's HTML...
-============
-
-Not a friendly format to edit
-
-----
-
-:data-x: r800
-
-...and manual positioning
-=========================
-
-So inserting a slide means
-
-repositioning all the following slides!
-
-
-.. note::
-
-    The endless repositioning of slides is what prompted me to write
-    Hovercraft! in the first place.
-
-----
-
-:id: thequestion
-:data-x: r0
-:data-y: r-1200
-
-*Is there no solution?*
-=======================
-
-Of course there is!
-
-.. note::
-
-    What would be the point of this slide show if I didn't have a solution?
-    Duh!
-
-----
-
-:data-rotate-y: 180
-:data-scale: 3
-:data-x: r-2500
-:data-y: r0
-
-Introducing **Hovercraft!**
+What type of health checks?
 ===========================
 
-.. note::
+* HTTP/HTTPS
 
-    TADA!
+* TCP
 
-----
-
-:data-x: r-3000
-:data-scale: 1
-
-reStructuredText
-----------------
-
-plus
-....
-
-impress.js
-----------
-
-plus
-....
-
-impressConsole.js
------------------
-
-plus
-....
-
-positioning!
-------------
-
-----
-
-:data-y: r-1200
-
-Position slides
-===============
-
-* Automatically!
-* Absolutely!
-* Relative to the previous slide!
-* Along an SVG path!
-
+* Command
 
 .. note::
 
-    That SVG path support was a lot of work. And all I used it for was to
-    position the slides in circles.
+   HTTP/HTTPS like the internet
+   
+   TCP check if port is in use
+
+   Command will run a command against inside the task
 
 ----
 
-Presenter console!
+:data-rotate: 90
+
+What are the important settings?
+================================
+
+* path (/api/health)
+
+* protocol (HTTPS/HTTP)
+
+* gracePeriodSeconds (300 seconds)
+
+* intervalSeconds
+
+* timeoutSeconds
+
+* maxConsecutiveFailures
+
+.. note::
+
+   gracePeriodSeconds ignore failures until either success or after 300 secs
+
+   intervalSeconds wait inbetween checks
+
+   timeoutSeconds if reached == failed
+
+   maxConsecutiveFailures number of fails in a row before TASK isn't health
+
+----
+
+:data-rotate: 90
+
+Can I have multiple health checks?
+==================================
+
+YES!
+
+.. note::
+
+    Just here so no one has to ask
+
+----
+
+:data-rotate: 90
+
+Why Mesos added native HC?
+==========================
+
+* Most frameworks where creating their own
+
+* Frameworks had limitations
+
+* Here's the doc: https://github.com/apache/mesos/blob/master/docs/health-checks.md
+
+.. note::
+
+    I'll get to the framework limitations soon.
+
+----
+
+:data-rotate: 90
+
+Marathon Health Checks
+======================
+
+As of 1.4 Marathon Health Checks are deprecated. Why?
+
+A blog post from Mesosphere = https://mesosphere.com/blog/2017/01/05/introducing-mesos-native-health-checks-apache-mesos-part-1/
+
+.. note::
+
+    Marathon did some benchmarking and found:
+
+    HTTP checks start to fail after ~1900 tasks
+
+    TCP was a little better but problems started at ~3700
+
+    Mesos native scaled linearly to 4500 tasks
+
+    The health state is not available via the Mesos state
+
+    Marathon has to share the same network as the tasks to monitor, so it can reach all launched tasks
+
+----
+
+:data-rotate: 90
+
+Where do they run?
 ==================
 
-* A view of the current slide
-* A view of the next slide
-* Your notes
-* A clock
-* A timer
+Mesos native == on the agent
+Marathon == from marathon to the task
 
 .. note::
 
-    You found the presenter console already!
+    More about native next
 
 ----
 
-**Hovercraft!**
-===============
+:data-rotate: 90
 
-.. image:: images/hovercraft_logo.png
+But how does it actually work?
+==============================
 
-The merge of convenience and cool!
+The health check enters the network namespace before running a curl command. (HTTP/HTTPS or TCP only)
+
+Docker run is used for commands
 
 .. note::
 
-    A slogan: The ad-mans best friend!
+    Limitations; HTTP/HTTPS and TCP run checks against 127.0.0.1
+
+    Command might have issues try using Mesos 1.2.0
+
+    Enter network namespace via setns command
+
+----
+
+:data-rotate: 90
+
+Marathon JSON
+=============
+
+.. code:: bash
+
+  "healthChecks": [{
+    "port": 22,
+    "protocol": "MESOS_TCP",
+    "gracePeriodSeconds": 300,
+    "intervalSeconds": 60,
+    "timeoutSeconds": 20,
+    "maxConsecutiveFailures": 0
+  }],
+
+.. note::
+
+    Only works via REST API
+
+----
+
+Healthy!
+========
+
+.. image:: images/healthy.png
 
 ----
 
@@ -293,13 +218,5 @@ The merge of convenience and cool!
 :data-z: 4000
 :data-rotate-x: 90
 
-**Hovercraft!**
-===============
-
-On Github:
-
-https://github.com/regebro/hovercraft
-
-.. note::
-
-    Fork and contribute!
+Questions?
+==========
